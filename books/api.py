@@ -1,9 +1,15 @@
+from ast import List
 from ninja import Router, Query
-from .schemas import BooksSchema, RatingSchema, RandomFiltersSchema
+from .schemas import BooksSchema, RatingSchema, RandomFiltersSchema, BooksViewSchema
 from .models import Books, Categories
+from typing import List
 
 books_router = Router()
 
+@books_router.get('/', response={200: List[BooksViewSchema]})
+def get_book(request):
+    books = Books.objects.all()
+    return books
 
 @books_router.post('/')
 def create_book(request, book_schema: BooksSchema):
