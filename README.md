@@ -2,6 +2,9 @@
 
 A Django-based REST API for managing and evaluating books, allowing users to register books, rate them, and get random book recommendations based on various filters.
 
+![alfons-morales-YLSwjSy7stw-unsplash](https://github.com/user-attachments/assets/e1db1883-831d-4bce-bf4c-cb9812c8eeb3)
+
+
 ## 🎯 Project Overview
 
 This is an MVP (Minimum Viable Product) project that provides a RESTful API for:
