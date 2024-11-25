@@ -1,130 +1,146 @@
-# API Book Registration and Evaluation
+# 📚 API-Book-Reg-Aval
 
-A Django-based REST API for managing and evaluating books, allowing users to register books, rate them, and get random book recommendations based on various filters.
+A robust and scalable API built with Django and Ninja for managing book registrations, categorization, and ratings.
 
-![alfons-morales-YLSwjSy7stw-unsplash](https://github.com/user-attachments/assets/e1db1883-831d-4bce-bf4c-cb9812c8eeb3)
+---
 
+## 📖 Overview
 
-## 🎯 Project Overview
+`API-Book-Reg-Aval` offers a comprehensive solution for managing books, their categories, and user-generated ratings. It allows seamless creation, retrieval, updating, and random querying of books with optional filtering by grade and category. With its RESTful design, this project is optimized for both developers and end-users.
 
-This is an MVP (Minimum Viable Product) project that provides a RESTful API for:
-- Book registration and management
-- Book ratings and evaluations
-- Random book recommendations with customizable filters
-- Category-based book organization
+---
 
-## 🛠️ Technologies Used
+## 🎯 Features
 
-- Python
-- Django
-- Django Ninja (for REST API)
-- SQLite (default Django database)
+- **CRUD Operations** for books and categories.
+- **Dynamic Rating System**: Add or update ratings and comments for books.
+- **Random Book Selection** with optional filters.
+- **Admin Panel** for backend management.
+- **Fully Typed Schemas** with Ninja and Pydantic for robust API validation.
 
-## 📋 Features
+---
 
-### Book Management
-- Create new books with name, streaming platform, and categories
-- View all registered books
-- Delete existing books
-- Supported streaming platforms:
-  - Amazon Kindle (AK)
-  - Physical Book (PB)
+## 🛠️ Architecture
 
-### Book Evaluation
-- Rate books with grades (0-5)
-- Add comments to books
-- Update existing evaluations
-
-### Smart Recommendations
-- Get random book recommendations based on:
-  - Minimum grade filter
-  - Category filter
-  - Read/Unread status
-
-## 🚀 API Endpoints
-
-### GET `/api/books/`
-- Returns list of all books
-- Response: List of books with name, streaming, categories, and ID
-
-### POST `/api/books/`
-- Creates a new book
-- Required fields:
-  - name: string
-  - streaming: string (PB or AK)
-  - categories: array of category IDs
-
-### PUT `/api/books/{book_id}`
-- Updates book evaluation
-- Required fields:
-  - comments: string
-  - grade: integer (0-5)
-
-### DELETE `/api/books/{book_id}`
-- Deletes specified book
-- Returns deleted book ID
-
-### GET `/api/books/random/`
-- Returns random book based on filters
-- Query parameters:
-  - min_grade: integer
-  - categories: integer
-  - read_again: boolean
-
-## 💾 Models
-
-### Books
-```python
-- name: CharField(max_length=50)
-- streaming: CharField(choices=['AK', 'PB'])
-- grade: IntegerField(nullable)
-- comments: TextField(nullable)
-- categories: ManyToManyField(Categories)
+```mermaid
+graph TD
+    User[User] -->|Requests| API[Ninja API]
+    API -->|Router| BooksRouter[Books Router]
+    BooksRouter -->|Model| DB[Database]
+    API -->|Admin| AdminPanel[Django Admin Panel]
 ```
 
-### Categories
-```python
-- name: CharField(max_length=50)
-```
+---
 
-## 🔧 Setup and Installation
+## 🚀 Installation & Usage
 
-1. Clone the repository:
-```bash
-git clone https://github.com/Caio-Felice-Cunha/API-Book-Reg-Aval.git
-```
+### Prerequisites
 
-2. Create and activate virtual environment:
-```bash
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-```
+- Python 3.10+
+- Django 5.1+
+- Virtual environment tool (e.g., `venv` or `conda`)
 
-3. Install dependencies:
-```bash
-pip install django django-ninja
-```
+### Setup
 
-4. Run migrations:
-```bash
-python manage.py migrate
-```
+1. **Clone the Repository**
+   ```bash
+   git clone https://github.com/Caio-Felice-Cunha/API-Book-Reg-Aval.git
+   cd API-Book-Reg-Aval
+   ```
 
-5. Start development server:
-```bash
-python manage.py runserver
-```
+2. **Create and Activate a Virtual Environment**
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   ```
+
+3. **Install Dependencies**
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+4. **Apply Migrations**
+   ```bash
+   python manage.py migrate
+   ```
+
+5. **Run the Server**
+   ```bash
+   python manage.py runserver
+   ```
+
+6. **Access the Application**
+   - **Admin Panel**: [http://127.0.0.1:8000/admin](http://127.0.0.1:8000/admin)
+   - **API Root**: [http://127.0.0.1:8000/api/books](http://127.0.0.1:8000/api/books)
+
+---
+
+## 🧑‍💻 Development Setup
+
+### Setting Up the Development Environment
+
+1. Follow the installation steps above.
+
+2. Install additional development tools:
+   ```bash
+   pip install django-debug-toolbar
+   ```
+
+3. Enable Debug Toolbar by adding it to `INSTALLED_APPS` in `core/settings.py`:
+   ```python
+   INSTALLED_APPS += ['debug_toolbar']
+   ```
+
+4. Configure URLs for development:
+   ```python
+   from django.urls import include
+   urlpatterns += [path('__debug__/', include('debug_toolbar.urls'))]
+   ```
+
+### Running Tests
+
+- Run all tests:
+  ```bash
+  python manage.py test
+  ```
+
+### Submitting Contributions
+
+1. **Fork the Repository** on GitHub.
+2. **Create a New Branch** for your feature:
+   ```bash
+   git checkout -b feature-name
+   ```
+3. Commit your changes and push them to your branch.
+4. Submit a Pull Request with a detailed description of your changes.
+
+---
+
+## 🐞 Known Issues & Future Plans
+
+### Known Issues
+
+- The `RandomFiltersSchema` currently supports only minimal filtering.
+- No built-in support for pagination in `list_books`.
+
+### Future Plans
+
+- Implement advanced filtering with logical operators.
+- Add comprehensive pagination and sorting options.
+- Enhance front-end integration for seamless user experience.
+
+---
+
+## 📄 License
+
+This project is licensed under the [MIT License](LICENSE).
+
+---
+
+## 🙏 Acknowledgments
+
+Special thanks to all contributors and users who have provided valuable feedback to make this project better.
 
 ## ⚖️ Credits
 
 This project was developed as part of the "4 Days 4 Projects" initiative by [Pythonando](https://pythonando.com.br) on YouTube.
-
-## 📝 Note
-
-This is an MVP (Minimum Viable Product) project intended for demonstration and learning purposes. While functional, it may require additional features and security measures for production use.
-
-## 📫 Contact
-
-Caio Felice Cunha - [GitHub Profile](https://github.com/Caio-Felice-Cunha)
-
-Project Link: [https://github.com/Caio-Felice-Cunha/API-Book-Reg-Aval](https://github.com/Caio-Felice-Cunha/API-Book-Reg-Aval)
