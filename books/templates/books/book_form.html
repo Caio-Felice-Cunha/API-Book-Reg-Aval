@@ -1,0 +1,41 @@
+{% extends 'books/base.html' %}
+
+{% block content %}
+<h2>Add New Book</h2>
+<form method="post" class="book-form">
+    {% csrf_token %}
+    <div class="mb-3">
+        <label for="name" class="form-label">Book Name</label>
+        <input type="text" class="form-control" id="name" name="name" required>
+    </div>
+    
+    <div class="mb-3">
+        <label for="streaming" class="form-label">Format</label>
+        <select class="form-select" id="streaming" name="streaming" required>
+            <option value="AK">Amazon Kindle</option>
+            <option value="PB">Physical Book</option>
+        </select>
+    </div>
+    
+    <div class="mb-3">
+        <label for="categories" class="form-label">Categories</label>
+        <select class="form-select" id="categories" name="categories" multiple required>
+            {% for category in categories %}
+            <option value="{{ category.id }}">{{ category.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    
+    <div class="mb-3">
+        <label for="grade" class="form-label">Rating (0-10)</label>
+        <input type="number" class="form-control" id="grade" name="grade" min="0" max="10">
+    </div>
+    
+    <div class="mb-3">
+        <label for="comments" class="form-label">Comments</label>
+        <textarea class="form-control" id="comments" name="comments" rows="3"></textarea>
+    </div>
+    
+    <button type="submit" class="btn btn-primary">Add Book</button>
+</form>
+{% endblock %} 
