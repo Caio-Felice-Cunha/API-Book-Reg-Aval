@@ -1,0 +1,35 @@
+{% extends 'books/base.html' %}
+
+{% block content %}
+<h2>Books</h2>
+<div class="row mt-4">
+    {% for book in books %}
+    <div class="col-md-6 mb-3">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">{{ book.name }}</h5>
+                <p class="card-text">
+                    <strong>Format:</strong> {{ book.get_streaming_display }}<br>
+                    <strong>Categories:</strong> 
+                    {% for category in book.categories.all %}
+                        {{ category.name }}{% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                </p>
+                {% if book.grade %}
+                <p class="card-text">
+                    <strong>Rating:</strong> {{ book.grade }}/10
+                </p>
+                {% endif %}
+                {% if book.comments %}
+                <p class="card-text"><small>{{ book.comments }}</small></p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col">
+        <p>No books added yet.</p>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %} 
