@@ -11,11 +11,12 @@ class BookListView(ListView):
 
 def book_create(request):
     if request.method == 'POST':
+        grade = request.POST.get('grade')
         book = Books.objects.create(
-            name=request.POST['name'],
-            streaming=request.POST['streaming'],
-            grade=request.POST['grade'] if request.POST['grade'] else None,
-            comments=request.POST['comments']
+            name=request.POST.get('name', ''),
+            streaming=request.POST.get('streaming', ''),
+            grade=int(grade) if grade else None,
+            comments=request.POST.get('comments', '')
         )
         book.categories.set(request.POST.getlist('categories'))
         return redirect('book_list')
