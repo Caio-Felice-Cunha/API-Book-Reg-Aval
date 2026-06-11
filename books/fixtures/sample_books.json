@@ -1,0 +1,183 @@
+[
+  {
+    "model": "books.categories",
+    "pk": 1,
+    "fields": {
+      "name": "Fiction"
+    }
+  },
+  {
+    "model": "books.categories",
+    "pk": 2,
+    "fields": {
+      "name": "Non-Fiction"
+    }
+  },
+  {
+    "model": "books.categories",
+    "pk": 3,
+    "fields": {
+      "name": "Programming"
+    }
+  },
+  {
+    "model": "books.categories",
+    "pk": 4,
+    "fields": {
+      "name": "Science"
+    }
+  },
+  {
+    "model": "books.books",
+    "pk": 1,
+    "fields": {
+      "name": "The Pragmatic Programmer",
+      "streaming": "PB",
+      "grade": 9,
+      "comments": "Practical advice that aged well.",
+      "categories": [
+        3
+      ],
+      "created_at": "2024-11-04T20:30:00Z",
+      "updated_at": "2024-11-04T20:30:00Z"
+    }
+  },
+  {
+    "model": "books.books",
+    "pk": 2,
+    "fields": {
+      "name": "Clean Code",
+      "streaming": "AK",
+      "grade": 8,
+      "comments": "Opinionated but useful.",
+      "categories": [
+        3
+      ],
+      "created_at": "2024-11-04T20:30:00Z",
+      "updated_at": "2024-11-04T20:30:00Z"
+    }
+  },
+  {
+    "model": "books.books",
+    "pk": 3,
+    "fields": {
+      "name": "Sapiens",
+      "streaming": "AK",
+      "grade": 9,
+      "comments": "Wide-ranging history of humankind.",
+      "categories": [
+        2
+      ],
+      "created_at": "2024-11-04T20:30:00Z",
+      "updated_at": "2024-11-04T20:30:00Z"
+    }
+  },
+  {
+    "model": "books.books",
+    "pk": 4,
+    "fields": {
+      "name": "Thinking, Fast and Slow",
+      "streaming": "PB",
+      "grade": 8,
+      "comments": "Dense, rewards a second read.",
+      "categories": [
+        2,
+        4
+      ],
+      "created_at": "2024-11-04T20:30:00Z",
+      "updated_at": "2024-11-04T20:30:00Z"
+    }
+  },
+  {
+    "model": "books.books",
+    "pk": 5,
+    "fields": {
+      "name": "Dune",
+      "streaming": "PB",
+      "grade": 10,
+      "comments": "A classic for a reason.",
+      "categories": [
+        1
+      ],
+      "created_at": "2024-11-04T20:30:00Z",
+      "updated_at": "2024-11-04T20:30:00Z"
+    }
+  },
+  {
+    "model": "books.books",
+    "pk": 6,
+    "fields": {
+      "name": "The Hobbit",
+      "streaming": "AK",
+      "grade": 9,
+      "comments": "Comfort read.",
+      "categories": [
+        1
+      ],
+      "created_at": "2024-11-04T20:30:00Z",
+      "updated_at": "2024-11-04T20:30:00Z"
+    }
+  },
+  {
+    "model": "books.books",
+    "pk": 7,
+    "fields": {
+      "name": "A Brief History of Time",
+      "streaming": "AK",
+      "grade": 7,
+      "comments": "Approachable physics overview.",
+      "categories": [
+        4
+      ],
+      "created_at": "2024-11-04T20:30:00Z",
+      "updated_at": "2024-11-04T20:30:00Z"
+    }
+  },
+  {
+    "model": "books.books",
+    "pk": 8,
+    "fields": {
+      "name": "Designing Data-Intensive Applications",
+      "streaming": "PB",
+      "grade": 10,
+      "comments": "Reference-grade systems book.",
+      "categories": [
+        3,
+        4
+      ],
+      "created_at": "2024-11-04T20:30:00Z",
+      "updated_at": "2024-11-04T20:30:00Z"
+    }
+  },
+  {
+    "model": "books.books",
+    "pk": 9,
+    "fields": {
+      "name": "The Lean Startup",
+      "streaming": "AK",
+      "grade": 7,
+      "comments": "Good framing, light on detail.",
+      "categories": [
+        2
+      ],
+      "created_at": "2024-11-04T20:30:00Z",
+      "updated_at": "2024-11-04T20:30:00Z"
+    }
+  },
+  {
+    "model": "books.books",
+    "pk": 10,
+    "fields": {
+      "name": "Project Hail Mary",
+      "streaming": "PB",
+      "grade": 9,
+      "comments": "Fun hard sci-fi.",
+      "categories": [
+        1,
+        4
+      ],
+      "created_at": "2024-11-04T20:30:00Z",
+      "updated_at": "2024-11-04T20:30:00Z"
+    }
+  }
+]
