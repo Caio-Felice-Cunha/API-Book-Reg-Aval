@@ -1,146 +1,127 @@
-# 📚 API-Book-Reg-Aval
+# API-Book-Reg-Aval
 
-A robust and scalable API built with Django and Ninja for managing book registrations, categorization, and ratings.
+A small REST API built with Django and django-ninja for registering books, tagging them with categories, and rating them. It also ships a minimal HTML page to list and add books.
 
----
+This is a learning/portfolio project (see Credits). The code below has been cleaned up so the documented setup actually runs and the rating and random-selection features behave as described.
 
-## 📖 Overview
+## What it does
 
-`API-Book-Reg-Aval` offers a comprehensive solution for managing books, their categories, and user-generated ratings. It allows seamless creation, retrieval, updating, and random querying of books with optional filtering by grade and category. With its RESTful design, this project is optimized for both developers and end-users.
+- Register books with a name, a format (Amazon Kindle or Physical Book), and one or more categories.
+- Rate a book from 0 to 10 and attach a free-text comment.
+- Read a book's rating and comment back through the API.
+- Pull a random book, optionally filtered by minimum grade and by category.
+- Browse and add books through a Bootstrap HTML page, and manage everything in the Django admin.
 
----
+## Tech stack
 
-## 🎯 Features
+- Python, Django 5.1+ (verified on Django 6.0)
+- django-ninja (typed routing + Pydantic schemas)
+- django-cors-headers
+- SQLite (default Django dev database)
 
-- **CRUD Operations** for books and categories.
-- **Dynamic Rating System**: Add or update ratings and comments for books.
-- **Random Book Selection** with optional filters.
-- **Admin Panel** for backend management.
-- **Fully Typed Schemas** with Ninja and Pydantic for robust API validation.
+## API endpoints
 
----
+All endpoints are mounted under `/api/books/`. Interactive docs are at `/api/docs`.
 
-## 🛠️ Architecture
+| Method | Path | Purpose | Query / Body |
+| ------ | ---- | ------- | ------------ |
+| GET | `/api/books/` | List all books | none |
+| POST | `/api/books/` | Create a book | body: `name`, `streaming` (`AK` or `PB`), `categories` (list of ids) |
+| GET | `/api/books/{id}` | Get one book | none |
+| PATCH | `/api/books/{id}/rating` | Update grade and/or comments | body: `grade` (0-10, optional), `comments` (optional) |
+| GET | `/api/books/random/` | Get a random book | query: `min_grade` (0-10), `categories` (id) |
 
-```mermaid
-graph TD
-    User[User] -->|Requests| API[Ninja API]
-    API -->|Router| BooksRouter[Books Router]
-    BooksRouter -->|Model| DB[Database]
-    API -->|Admin| AdminPanel[Django Admin Panel]
-```
+Notes on behavior:
 
----
+- `grade` is validated to the 0-10 range at the request layer; out-of-range values return `422`.
+- The rating PATCH is a true partial update. Sending only `comments` leaves an existing `grade` untouched.
+- `GET /api/books/random/` returns `404` when no book matches the filters (instead of a 500).
+- `grade` and `comments` are included in the response body, so a stored rating is readable through the API.
 
-## 🚀 Installation & Usage
+## Installation and usage
 
 ### Prerequisites
 
 - Python 3.10+
-- Django 5.1+
-- Virtual environment tool (e.g., `venv` or `conda`)
+- A virtual environment tool (`venv` is fine)
 
 ### Setup
 
-1. **Clone the Repository**
+1. Clone the repository.
    ```bash
    git clone https://github.com/Caio-Felice-Cunha/API-Book-Reg-Aval.git
    cd API-Book-Reg-Aval
    ```
 
-2. **Create and Activate a Virtual Environment**
+2. Create and activate a virtual environment.
    ```bash
    python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   source venv/bin/activate  # Windows: venv\Scripts\activate
    ```
 
-3. **Install Dependencies**
+3. Install dependencies.
    ```bash
    pip install -r requirements.txt
    ```
 
-4. **Apply Migrations**
+4. (Optional) Configure environment variables. Copy `.env.example` to `.env` and adjust. The app reads `DJANGO_SECRET_KEY`, `DJANGO_DEBUG`, and `DJANGO_ALLOWED_HOSTS` from the environment, with dev-safe defaults if they are unset.
+
+5. Apply migrations.
    ```bash
    python manage.py migrate
    ```
 
-5. **Run the Server**
+6. (Optional) Load the sample data (10 books across 4 categories) so the API has something to return on first run.
+   ```bash
+   python manage.py loaddata sample_books
+   ```
+
+7. (Optional) Create an admin user for the admin panel.
+   ```bash
+   python manage.py createsuperuser
+   ```
+
+8. Run the server.
    ```bash
    python manage.py runserver
    ```
 
-6. **Access the Application**
-   - **Admin Panel**: [http://127.0.0.1:8000/admin](http://127.0.0.1:8000/admin)
-   - **API Root**: [http://127.0.0.1:8000/api/books](http://127.0.0.1:8000/api/books)
+9. Open the app.
+   - HTML book list: http://127.0.0.1:8000/
+   - API docs: http://127.0.0.1:8000/api/docs
+   - Admin panel: http://127.0.0.1:8000/admin
 
----
+The database (`db.sqlite3`) is created locally on first migrate and is intentionally git-ignored, so each clone starts clean. Use the fixture in step 6 to seed demo data.
 
-## 🧑‍💻 Development Setup
+## Running tests
 
-### Setting Up the Development Environment
+```bash
+python manage.py test
+```
 
-1. Follow the installation steps above.
+The suite in `books/tests.py` covers list/get/create, rating bounds rejection, partial-PATCH preservation, random-with-filters, and the empty-random 404.
 
-2. Install additional development tools:
-   ```bash
-   pip install django-debug-toolbar
-   ```
+## Configuration
 
-3. Enable Debug Toolbar by adding it to `INSTALLED_APPS` in `core/settings.py`:
-   ```python
-   INSTALLED_APPS += ['debug_toolbar']
-   ```
+| Variable | Default | Purpose |
+| -------- | ------- | ------- |
+| `DJANGO_SECRET_KEY` | dev-only insecure key | Django signing key. Set a real one for any deployment. |
+| `DJANGO_DEBUG` | `1` | `1` enables debug mode (local dev). Set `0` for production. |
+| `DJANGO_ALLOWED_HOSTS` | empty | Comma-separated hosts. Required when `DJANGO_DEBUG=0`. |
 
-4. Configure URLs for development:
-   ```python
-   from django.urls import include
-   urlpatterns += [path('__debug__/', include('debug_toolbar.urls'))]
-   ```
+## Project layout
 
-### Running Tests
+```
+core/        Django project (settings, root URLs, ninja API mount)
+books/       App: models, schemas, ninja router, HTML views, templates, tests
+  fixtures/  sample_books.json seed data
+manage.py    Django entrypoint
+```
 
-- Run all tests:
-  ```bash
-  python manage.py test
-  ```
-
-### Submitting Contributions
-
-1. **Fork the Repository** on GitHub.
-2. **Create a New Branch** for your feature:
-   ```bash
-   git checkout -b feature-name
-   ```
-3. Commit your changes and push them to your branch.
-4. Submit a Pull Request with a detailed description of your changes.
-
----
-
-## 🐞 Known Issues & Future Plans
-
-### Known Issues
-
-- The `RandomFiltersSchema` currently supports only minimal filtering.
-- No built-in support for pagination in `list_books`.
-
-### Future Plans
-
-- Implement advanced filtering with logical operators.
-- Add comprehensive pagination and sorting options.
-- Enhance front-end integration for seamless user experience.
-
----
-
-## 📄 License
+## License
 
 This project is licensed under the [MIT License](LICENSE).
 
----
+## Credits
 
-## 🙏 Acknowledgments
-
-Special thanks to all contributors and users who have provided valuable feedback to make this project better.
-
-## ⚖️ Credits
-
-This project was developed as part of the "4 Days 4 Projects" initiative by [Pythonando](https://pythonando.com.br) on YouTube.
+Built as part of the "4 Days 4 Projects" initiative by [Pythonando](https://pythonando.com.br) on YouTube.
